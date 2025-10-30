@@ -75,8 +75,8 @@ class SearchService {
       }
     }
 
-    // Search meals by title, ingredients, steps and category titles
-    for (final meal in dummyMeals) {
+  // Search meals by title, ingredients, steps and category titles
+  for (final meal in largeDummyMeals) {
       final titleMatch = meal.title.toLowerCase().contains(q);
 
       final ingredientsText = meal.ingredients.join(' ').toLowerCase();

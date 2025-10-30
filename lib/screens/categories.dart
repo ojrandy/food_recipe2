@@ -11,17 +11,14 @@ class CategoriesScreen extends StatelessWidget {
   // Method to select a category
   void _selectCategory(BuildContext context, Category category) {
     // There will be filtering logic here in future
-    final filteredMeals = dummyMeals.where((meal) {
+    final filteredMeals = largeDummyMeals.where((meal) {
       return meal.categories.contains(category.id);
     }).toList();
 
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => MealsScreen(
-         
-          title: category.title,
-          meals: filteredMeals,
-        ),
+        builder: (ctx) =>
+            MealsScreen(title: category.title, meals: filteredMeals),
       ),
     );
   }
@@ -37,7 +34,7 @@ class CategoriesScreen extends StatelessWidget {
         mainAxisSpacing: 20,
       ),
       children: [
-        for (final category in availableCategories)
+        for (final category in largeAvailableCategories)
           CategoryGridItem(
             category: category,
             onSelectCategory: () {

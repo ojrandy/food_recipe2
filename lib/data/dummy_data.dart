@@ -25,6 +25,46 @@ const availableCategories = [
   Category(id: 'c14', title: 'Autumn', color: Color.fromARGB(255, 1, 64, 199)),
 ];
 
+/// Generate additional categories by copying and varying the existing ones.
+List<Category> generateMoreCategories(int count) {
+  final List<Category> result = [];
+
+  // Find the maximum numeric suffix used in existing category ids (e.g. 'c14' -> 14).
+  final existingNumbers = availableCategories
+      .map(
+        (c) =>
+            int.tryParse(RegExp(r'\d+').firstMatch(c.id)?.group(0) ?? '0') ?? 0,
+      )
+      .toList();
+  final maxExisting = existingNumbers.isEmpty
+      ? 0
+      : existingNumbers.reduce((a, b) => a > b ? a : b);
+
+  for (var i = 0; i < count; i++) {
+    final template = availableCategories[i % availableCategories.length];
+    final newIndex = maxExisting + i + 1;
+    final newId = 'c$newIndex';
+    final newTitle = '${template.title} $newIndex';
+
+    // Slight hue shift so colors vary.
+    final hsl = HSLColor.fromColor(template.color);
+    final newHue = (hsl.hue + (i * 37)) % 360; // 37 gives a fairly even spread
+    final newColor = hsl.withHue(newHue).toColor();
+
+    result.add(Category(id: newId, title: newTitle, color: newColor));
+  }
+
+  return result;
+}
+
+/// A larger category list combining the original `availableCategories`
+/// plus programmatically-generated variants. Use `largeAvailableCategories`
+/// when you want many categories for stress-testing.
+final largeAvailableCategories = [
+  ...availableCategories,
+  ...generateMoreCategories(200),
+];
+
 final dummyMeals = [
   Meal(
     id: 'm1',
@@ -348,3 +388,56 @@ final dummyMeals = [
     isLactoseFree: true,
   ),
 ];
+
+/// Generates [count] additional Meal objects by copying and slightly
+/// modifying the existing `dummyMeals`. This is useful for stress-testing
+/// the UI without manually writing many entries.
+List<Meal> generateMoreMeals(int count) {
+  final List<Meal> result = [];
+  var nextId = dummyMeals.length + 1;
+
+  for (var i = 0; i < count; i++) {
+    final template = dummyMeals[i % dummyMeals.length];
+    final id = 'm${nextId++}';
+
+    // Slightly vary title and duration so items don't look identical.
+    final title = '${template.title} (copy $id)';
+    final duration = template.duration + (i % 5);
+
+    // Rotate categories a bit so distribution changes.
+    final categories = List<String>.from(template.categories);
+    if (categories.isEmpty && availableCategories.isNotEmpty) {
+      categories.add(availableCategories[i % availableCategories.length].id);
+    } else if (categories.isNotEmpty) {
+      // rotate the first category
+      final first = categories.removeAt(0);
+      categories.add(first);
+    }
+
+    result.add(
+      Meal(
+        id: id,
+        categories: categories,
+        title: title,
+        affordability: template.affordability,
+        complexity: template.complexity,
+        imageUrl: template.imageUrl,
+        duration: duration,
+        ingredients: List<String>.from(template.ingredients),
+        steps: List<String>.from(template.steps),
+        isGlutenFree: template.isGlutenFree,
+        isVegan: template.isVegan,
+        isVegetarian: template.isVegetarian,
+        isLactoseFree: template.isLactoseFree,
+      ),
+    );
+  }
+
+  return result;
+}
+
+/// A large meal list combining the original `dummyMeals` plus 1,010
+/// programmatically-generated variants. Use this for stress-testing UI
+/// lists, performance and scrolling behavior. It is not used by default
+/// in the app; swap `dummyMeals` for `largeDummyMeals` where needed.
+final largeDummyMeals = [...dummyMeals, ...generateMoreMeals(1010)];
