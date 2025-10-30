@@ -5,15 +5,10 @@ import 'package:food_recipe/screens/meal_details.dart';
 import 'package:food_recipe/widget/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen({
-    super.key,
-    required this.id,
-    required this.title,
-    required this.meals,
-  });
+  const MealsScreen({super.key, this.title, required this.meals});
 
-  final String id;
-  final String title;
+  // The title is optional
+  final String? title;
   final List<Meal> meals;
 
   void selectMeal(BuildContext context, Meal meal) {
@@ -56,8 +51,14 @@ class MealsScreen extends StatelessWidget {
         ),
       );
     }
+
+    // If no title is provided, return just the content
+    if (title == null) {
+      return content;
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(title: Text(title!)),
       body: content,
     );
   }
