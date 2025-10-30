@@ -89,7 +89,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         InkWell(
                           borderRadius: BorderRadius.circular(12),
                           onTap: () {
-                                final filteredMeals = largeDummyMeals
+                                final filteredMeals = dummyMeals
                                 .where(
                                   (m) => m.categories.contains(category.id),
                                 )
@@ -173,7 +173,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   );
                                 } else if (r.type == 'category') {
                                   final category = r.item as Category;
-                                      final filteredMeals = largeDummyMeals
+                                      final filteredMeals = dummyMeals
                                       .where(
                                         (m) =>
                                             m.categories.contains(category.id),
