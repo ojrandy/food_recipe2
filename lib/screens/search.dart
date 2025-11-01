@@ -89,7 +89,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         InkWell(
                           borderRadius: BorderRadius.circular(12),
                           onTap: () {
-                                final filteredMeals = dummyMeals
+                            final filteredMeals = dummyMeals
                                 .where(
                                   (m) => m.categories.contains(category.id),
                                 )
@@ -99,6 +99,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 builder: (ctx) => MealsScreen(
                                   title: category.title,
                                   meals: filteredMeals,
+                                  onToggleFavourite: (Meal m) {},
                                 ),
                               ),
                             );
@@ -168,12 +169,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (ctx) =>
-                                          MealDetailsScreen(meal: meal),
+                                          MealDetailsScreen(meal: meal, onToggleFavorite: (Meal m) {}),
                                     ),
                                   );
                                 } else if (r.type == 'category') {
                                   final category = r.item as Category;
-                                      final filteredMeals = dummyMeals
+                                  final filteredMeals = dummyMeals
                                       .where(
                                         (m) =>
                                             m.categories.contains(category.id),
@@ -184,6 +185,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       builder: (ctx) => MealsScreen(
                                         title: category.title,
                                         meals: filteredMeals,
+                                        onToggleFavourite: (Meal m) {},
                                       ),
                                     ),
                                   );

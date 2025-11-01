@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:food_recipe/data/dummy_data.dart';
 import 'package:food_recipe/models/category.dart';
+import 'package:food_recipe/models/meal.dart';
 import 'package:food_recipe/widget/category_grid_item.dart';
 import 'package:food_recipe/screens/meals.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key});
+  const CategoriesScreen({super.key, required this.onToggleFavourite});
+
+  final void Function(Meal meal) onToggleFavourite;
 
   // Method to select a category
   void _selectCategory(BuildContext context, Category category) {
@@ -17,8 +20,11 @@ class CategoriesScreen extends StatelessWidget {
 
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) =>
-            MealsScreen(title: category.title, meals: filteredMeals),
+        builder: (ctx) => MealsScreen(
+          title: category.title,
+          meals: filteredMeals,
+          onToggleFavourite: onToggleFavourite,
+        ),
       ),
     );
   }
