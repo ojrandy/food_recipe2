@@ -107,9 +107,11 @@ class _SearchScreenState extends State<SearchScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
+                               // ignore: deprecated_member_use
                               color: category.color.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
+                                // ignore: deprecated_member_use
                                 color: category.color.withOpacity(0.2),
                               ),
                             ),

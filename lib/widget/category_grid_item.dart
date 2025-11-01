@@ -18,15 +18,17 @@ class CategoryGridItem extends StatelessWidget {
     return InkWell(
       // interactive touch effect with inkwell which is absent in gesture detector
       onTap: onSelectCategory,
+       // ignore: deprecated_member_use
       splashColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
       borderRadius: BorderRadius.circular(15),
       child: Container(
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           gradient: LinearGradient(
+            
             colors: [
-              category.color.withOpacity(0.55),
-              category.color.withOpacity(0.9),
+              category.color.withOpacity(0.55),  // ignore: deprecated_member_use
+              category.color.withOpacity(0.9),  // ignore: deprecated_member_use
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
