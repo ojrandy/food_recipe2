@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_recipe/models/meal.dart';
 import 'package:food_recipe/screens/categories.dart';
+import 'package:food_recipe/screens/filters.dart';
 import 'package:food_recipe/screens/meals.dart';
 import 'package:food_recipe/screens/search.dart';
 import 'package:food_recipe/widget/main_drawer.dart';
@@ -46,7 +47,10 @@ class _TabsScreenState extends State<TabsScreen> {
   void _setScreen(String identifier) {
     setState(() {
       if (identifier == 'filters') {
-        _selectedPageIndex = 0;
+        // Passing the filterScreen
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (ctx) => FiltersScreen()));
       } else {
         // We return back to the home screen
         Navigator.of(context).pop();
