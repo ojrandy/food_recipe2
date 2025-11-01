@@ -3,6 +3,7 @@ import 'package:food_recipe/models/meal.dart';
 import 'package:food_recipe/screens/categories.dart';
 import 'package:food_recipe/screens/meals.dart';
 import 'package:food_recipe/screens/search.dart';
+import 'package:food_recipe/widget/main_drawer.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -33,11 +34,24 @@ class _TabsScreenState extends State<TabsScreen> {
       setState(() {
         _favoriteMeals.remove(meal);
       });
+      _showinfoMessage('Meal is no longer a favorite!');
     } else {
       setState(() {
         _favoriteMeals.add(meal);
       });
+      _showinfoMessage("Meal is added to favorites!");
     }
+  }
+
+  void _setScreen(String identifier) {
+    setState(() {
+      if (identifier == 'filters') {
+        _selectedPageIndex = 0;
+      } else {
+        // We return back to the home screen
+        Navigator.of(context).pop();
+      }
+    });
   }
 
   void _selectPage(int index) {
@@ -85,6 +99,7 @@ class _TabsScreenState extends State<TabsScreen> {
             ),
         ],
       ),
+      drawer: MainDrawer(onSelectScreen: _setScreen),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
