@@ -107,7 +107,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                               // ignore: deprecated_member_use
+                              // ignore: deprecated_member_use
                               color: category.color.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
@@ -170,8 +170,10 @@ class _SearchScreenState extends State<SearchScreen> {
                                   final meal = r.item as Meal;
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (ctx) =>
-                                          MealDetailsScreen(meal: meal, onToggleFavorite: (Meal m) {}),
+                                      builder: (ctx) => MealDetailsScreen(
+                                        meal: meal,
+                                        onToggleFavorite: (Meal m) {},
+                                      ),
                                     ),
                                   );
                                 } else if (r.type == 'category') {

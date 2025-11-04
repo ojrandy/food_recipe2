@@ -6,11 +6,11 @@ import 'package:food_recipe/models/category.dart';
 import 'package:food_recipe/data/dummy_data.dart';
 
 class SearchResult {
-  final String type; 
+  final String type;
   final String id;
   final String title;
   final String? subtitle;
-  final dynamic item; 
+  final dynamic item;
 
   SearchResult({
     required this.type,
@@ -20,7 +20,6 @@ class SearchResult {
     this.item,
   });
 }
-
 
 class SearchService {
   Timer? _debounce;
@@ -75,8 +74,8 @@ class SearchService {
       }
     }
 
-  // Search meals by title, ingredients, steps and category titles
-  for (final meal in largeDummyMeals) {
+    // Search meals by title, ingredients, steps and category titles
+    for (final meal in dummyMeals) {
       final titleMatch = meal.title.toLowerCase().contains(q);
 
       final ingredientsText = meal.ingredients.join(' ').toLowerCase();

@@ -392,52 +392,6 @@ final dummyMeals = [
 /// Generates [count] additional Meal objects by copying and slightly
 /// modifying the existing `dummyMeals`. This is useful for stress-testing
 /// the UI without manually writing many entries.
-List<Meal> generateMoreMeals(int count) {
-  final List<Meal> result = [];
-  var nextId = dummyMeals.length + 1;
-
-  for (var i = 0; i < count; i++) {
-    final template = dummyMeals[i % dummyMeals.length];
-    final id = 'm${nextId++}';
-
-    // Slightly vary title and duration so items don't look identical.
-    final title = '${template.title} (copy $id)';
-    final duration = template.duration + (i % 5);
-
-    // Rotate categories a bit so distribution changes.
-    final categories = List<String>.from(template.categories);
-    if (categories.isEmpty && availableCategories.isNotEmpty) {
-      categories.add(availableCategories[i % availableCategories.length].id);
-    } else if (categories.isNotEmpty) {
-      // rotate the first category
-      final first = categories.removeAt(0);
-      categories.add(first);
-    }
-
-    result.add(
-      Meal(
-        id: id,
-        categories: categories,
-        title: title,
-        affordability: template.affordability,
-        complexity: template.complexity,
-        imageUrl: template.imageUrl,
-        duration: duration,
-        ingredients: List<String>.from(template.ingredients),
-        steps: List<String>.from(template.steps),
-        isGlutenFree: template.isGlutenFree,
-        isVegan: template.isVegan,
-        isVegetarian: template.isVegetarian,
-        isLactoseFree: template.isLactoseFree,
-      ),
-    );
-  }
-
-  return result;
-}
-
-/// A large meal list combining the original `dummyMeals` plus 1,010
-/// programmatically-generated variants. Use this for stress-testing UI
-/// lists, performance and scrolling behavior. It is not used by default
-/// in the app; swap `dummyMeals` for `largeDummyMeals` where needed.
-final largeDummyMeals = [...dummyMeals, ...generateMoreMeals(1010)];
+// Meal generator and largeDummyMeals removed to keep the app using the
+// original, small `dummyMeals` list. If you want to stress-test again,
+// we can add a debug-only generator function that doesn't run by default.

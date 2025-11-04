@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:food_recipe/data/dummy_data.dart';
 import 'package:food_recipe/models/meal.dart';
 import 'package:food_recipe/screens/categories.dart';
 import 'package:food_recipe/screens/filters.dart';
 import 'package:food_recipe/screens/meals.dart';
 import 'package:food_recipe/screens/search.dart';
 import 'package:food_recipe/widget/main_drawer.dart';
+
+const kInitialFilters = {
+  Filter.glutenFree: false,
+  Filter.lactoseFree: false,
+  Filter.vegan: false,
+  Filter.vegetarian: false,
+};
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -17,6 +25,8 @@ class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
   // adding favorite list
   final List<Meal> _favoriteMeals = [];
+
+  Map<Filter, bool> _selectedFilters = kInitialFilters;
 
   // Creating a snack bar for the update message on favorite meals
   void _showinfoMessage(String message) {
@@ -44,17 +54,22 @@ class _TabsScreenState extends State<TabsScreen> {
     }
   }
 
-  void _setScreen(String identifier) {
-    setState(() {
-      // We return back to the home screen
-      Navigator.of(context).pop();
-      if (identifier == 'filters') {
-        // Passing the filterScreen
-        Navigator.of(
-          context,
-        ).push(MaterialPageRoute(builder: (ctx) => FiltersScreen()));
-      }
-    });
+  Future<void> _setScreen(String identifier) async {
+    // Close the drawer first
+    Navigator.of(context).pop();
+
+    if (identifier == 'filters') {
+      // Open filters and wait for result
+      final result = await Navigator.of(context).push<Map<Filter, bool>>(
+        MaterialPageRoute(
+          builder: (ctx) => FiltersScreen(currentFilters: _selectedFilters),
+        ),
+      );
+
+      setState(() {
+        _selectedFilters = result ?? kInitialFilters;
+      });
+    }
   }
 
   void _selectPage(int index) {
@@ -65,6 +80,21 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final availableMeals = dummyMeals.where((meal) {
+      if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
+        return false;
+      }
+      if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
+        return false;
+      }
+      if (_selectedFilters[Filter.vegan]! && !meal.isVegan) {
+        return false;
+      }
+      if (_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian) {
+        return false;
+      }
+      return true;
+    }).toList();
     // Creating a Widget to know the active Page
     var activePageTitle = 'Categories';
     Icon? activeIcons;
@@ -72,6 +102,7 @@ class _TabsScreenState extends State<TabsScreen> {
     if (_selectedPageIndex == 0) {
       activePage = CategoriesScreen(
         onToggleFavourite: _toggleMealFavouriteStatus,
+        availableMeals: availableMeals,
       );
       activePageTitle = 'Categories';
       activeIcons = const Icon(Icons.search);
